@@ -1,10 +1,14 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.io.PrintWriter" %>
+<%@ page import="bbs.BbsDAO" %>
+<%@ page import="bbs.Bbs" %>
+<%@ page import="java.util.ArrayList" %>
+
+
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8">	
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/bootstrap.css">
 <title>掲示板</title>
@@ -14,6 +18,11 @@
 		String userID = null;
 		if (session.getAttribute("userID") !=null){
 			userID = (String) session.getAttribute("userID");
+		}
+		int pageNumber = 1;
+		
+		if (request.getParameter("pageNumber") != null){
+			pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
 		}
 	%>
 	<nav class="navbar navbar-default">
@@ -27,8 +36,8 @@
 		</div>
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
-				<li class="active"><a href="main.jsp">メイン</a></li>
-				<li><a href="bbs.jsp">掲示板</a></li>
+				<li><a href="main.jsp">メイン</a></li>
+				<li class="active"><a href="bbs.jsp">掲示板</a></li>
 			</ul>
 			<%
 				if(userID == null){
@@ -63,6 +72,37 @@
 
 		</div>
 	</nav>
+	<div class="container">
+		<div class="row">
+			<table class="table table-striped" style="text-align: border: 1px solid #dddddd">
+				<thead>
+					<tr>
+						<th style="background-color: #eeeeee; text-align:center;">NO.</th>
+						<th style="background-color: #eeeeee; text-align:center;">タイトル</th>
+						<th style="background-color: #eeeeee; text-align:center;">作成者</th>
+						<th style="background-color: #eeeeee; text-align:center;">作成日</th>
+					</tr>
+				</thead>
+				<tbody>
+					<%
+						BbsDAO bbsDAO = new BbsDAO();
+					 	ArrayList<Bbs> list = bbsDAO.getList(pageNumber);
+					 	for(int i = 0; i < list.size(); i++){
+					%>
+					<tr>
+						<td><%= list.get(i).getBbsID() %></td>
+						<td> <a href="view.jsp?bbsID=<%= list.get(i).getBbsID() %>"><%= list.get(i).getBbsTitle() %></a></td>
+						<td><%= list.get(i).getUserID() %></td>
+						<td><%= list.get(i).getBbsDate()%></td>
+					</tr>					 	
+					<% 	
+					 	}
+					%>
+				</tbody>
+		  	</table>
+		  	<a href="write.jsp" class="btn btn-primary pull-right">書き込み</a>
+		</div>
+	</div>
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="js/bootstrap.js"></script>
 </body>

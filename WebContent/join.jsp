@@ -29,8 +29,8 @@
 					   data-toggle="dropdown" role="button" aria-haspopup="true"
 					   aria-expanded="false">接続<span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<li class="active"><a href="login.jsp">ログイン</a></li>
-						<li><a href="join.jsp">会員登録</a></li>
+						<li><a href="login.jsp">ログイン</a></li>
+						<li class="active"><a href="join.jsp">会員登録</a></li>
 					</ul>
 				</li>			
 			</ul>

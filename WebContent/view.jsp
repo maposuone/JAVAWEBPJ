@@ -1,23 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.io.PrintWriter" %>
-<%@ page import="bbs.BbsDAO" %>
 <%@ page import="bbs.Bbs" %>
-<%@ page import="java.util.ArrayList" %>
-
+<%@ page import="bbs.BbsDAO" %>
 
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">	
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/bootstrap.css">
 <title>掲示板</title>
-<style type="text/css">
-	a,a:hover{
-		color:#000000;
-		text-decoration:none;
-	}
-</style>
 </head>
 <body>
 	<%
@@ -25,11 +17,19 @@
 		if (session.getAttribute("userID") !=null){
 			userID = (String) session.getAttribute("userID");
 		}
-		int pageNumber = 1;
-		
-		if (request.getParameter("pageNumber") != null){
-			pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+		int	bbsID = 0;
+		if (request.getParameter("bbsID") != null){
+			bbsID = Integer.parseInt(request.getParameter("bbsID"));
 		}
+		
+		if(bbsID == 0){
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert('無効です。')");
+			script.println("location.href='bbs.jsp'");
+			script.println("</script>");
+		}
+		Bbs bbs = new BbsDAO().getbbs(bbsID);
 	%>
 	<nav class="navbar navbar-default">
 		<div class="navbar-header">
@@ -80,46 +80,41 @@
 	</nav>
 	<div class="container">
 		<div class="row">
-			<table class="table table-striped" style="text-align: border: 1px solid #dddddd">
-				<thead>
-					<tr>
-						<th style="background-color: #eeeeee; text-align:center;">NO.</th>
-						<th style="background-color: #eeeeee; text-align:center;">タイトル</th>
-						<th style="background-color: #eeeeee; text-align:center;">作成者</th>
-						<th style="background-color: #eeeeee; text-align:center;">作成日</th>
-					</tr>
-				</thead>
-				<tbody>
-					<%
-						BbsDAO bbsDAO = new BbsDAO();
-					 	ArrayList<Bbs> list = bbsDAO.getList(pageNumber);
-					 	for(int i = 0; i < list.size(); i++){
-					%>
-					<tr>
-						<td><%= list.get(i).getBbsID() %></td>
-						<td> <a href="view.jsp?bbsID=<%= list.get(i).getBbsID() %>"><%= list.get(i).getBbsTitle().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>") %></a></td>
-						<td><%= list.get(i).getUserID() %></td>
-						<td><%= list.get(i).getBbsDate()%></td>
-					</tr>					 	
-					<% 	
-					 	}
-					%>
-				</tbody>
-		  	</table>
-		  	<%
-		  		if(pageNumber != 1){
-		  			
-		  	%>
-		  			<a href="bbs.jsp?pageNumber=<%=pageNumber - 1%>" class="btn btn-success btn-arrow-left">戻る</a>
-		  	<%		
-		  		} 
-		  		if(bbsDAO.nextPage(pageNumber + 1)){
-		  	%>
-		  			<a href="bbs.jsp?pageNumber=<%=pageNumber + 1%>" class="btn btn-success btn-arrow-left">次へ</a>
-		  	<%
-		  		}
-		  	%>
-		  	<a href="write.jsp" class="btn btn-primary pull-right">書き込み</a>
+				<table class="table table-striped" style="text-align:center; border: 1px solid #dddddd">
+					<thead>
+						<tr>
+							<th colspan="3" style="background-color: #eeeeee; text-align:center;">書き込み表示</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="width:20%;">タイトル</td>
+							<td colspan="2"><%= bbs.getBbsTitle() %></td>
+						</tr>
+						<tr>
+							<td>作成者</td>
+							<td colspan="2"><%= bbs.getUserID() %></td>
+						</tr>
+						<tr>
+							<td>作成日</td>
+							<td colspan="2"><%= bbs.getBbsDate() %></td>
+						</tr>
+						<tr>
+							<td>内容</td>
+							<td colspan="2" style="min-height:200px; text-align:left;"><%= bbs.getBbsContent().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>") %></td>
+						</tr>						
+					</tbody>
+			  	</table>
+			  	<a href="bbs.jsp" class="btn btn-primary">目録</a>
+			  	<%
+			  		if(userID != null && userID.equals(bbs.getUserID())){
+			  	%>
+			  			<a href="update.jsp?bbsID=<%= bbsID %>" class="btn btn-primary">更新</a>
+			  			<a href="deleteAction.jsp?bbsID=<%= bbsID %>" class="btn btn-primary">削除</a>	  
+			  	<%
+			  		}
+			  	%>
+			  	
 		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>

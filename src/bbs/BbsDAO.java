@@ -42,6 +42,7 @@ public class BbsDAO {
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
 				return rs.getInt(1) + 1;
+				//return rs.getInt(1);
 			}
 			return 1; //1st åfé¶ï®
 		} catch (Exception e) {
@@ -78,8 +79,8 @@ public class BbsDAO {
 				Bbs bbs = new Bbs();
 				bbs.setBbsID(rs.getInt(1));
 				bbs.setBbsTitle(rs.getString(2));
+				bbs.setUserID(rs.getString(4));				
 				bbs.setBbsDate(rs.getString(3));
-				bbs.setUserID(rs.getString(4));
 				bbs.setBbsContent(rs.getString(5));
 				bbs.setBbsAvailable(rs.getInt(6));			
 				list.add(bbs);
@@ -118,8 +119,8 @@ public class BbsDAO {
 				Bbs bbs = new Bbs();
 				bbs.setBbsID(rs.getInt(1));
 				bbs.setBbsTitle(rs.getString(2));
-				bbs.setBbsDate(rs.getString(3));
-				bbs.setUserID(rs.getString(4));
+				bbs.setUserID(rs.getString(3));
+				bbs.setBbsDate(rs.getString(4));
 				bbs.setBbsContent(rs.getString(5));
 				bbs.setBbsAvailable(rs.getInt(6));
 				return bbs;
@@ -129,5 +130,18 @@ public class BbsDAO {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	public int update(int bbsID, String bbsTitle, String bbsContent) {
+		String SQL = "update bbs set bbsTitle = ? , bbsContent = ? where bbsID = ?";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, bbsTitle);
+			pstmt.setString(2, bbsContent);
+			pstmt.setInt(3, bbsID);
+			return pstmt.executeUpdate(); //1st åfé¶ï®
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return -1;//DB Error
 	}
 }

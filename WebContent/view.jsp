@@ -38,7 +38,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="main.jsp">jsp 掲示板Webサイト</a>
+			<a class="navbar-brand" href="main.jsp">掲示板Webサイト</a>
 		</div>
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
@@ -107,7 +107,7 @@
 			  	</table>
 			  	<a href="bbs.jsp" class="btn btn-primary">目録</a>
 			  	<%
-			  		if(userID != null && userID.equals(bbs.getUserID())){
+			  		if ( userID != null && userID.equals(bbs.getUserID())){
 			  	%>
 			  			<a href="update.jsp?bbsID=<%= bbsID %>" class="btn btn-primary">更新</a>
 			  			<a href="deleteAction.jsp?bbsID=<%= bbsID %>" class="btn btn-primary">削除</a>	  

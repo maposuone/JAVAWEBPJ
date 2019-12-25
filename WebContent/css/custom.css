@@ -1,0 +1,10 @@
+@import url(https://fonts.google.com/specimen/Noto+Serif+JP)
+@import url(https://fonts.google.com/specimen/M+PLUS+Rounded+1c)
+
+* {
+	font-family : 'Noto+Serif+JP';
+}
+
+h1 {
+	font-family : 'M+PLUS+Rounded+1c';
+}

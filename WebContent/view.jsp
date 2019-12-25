@@ -2,13 +2,13 @@
 <%@ page import="java.io.PrintWriter" %>
 <%@ page import="bbs.Bbs" %>
 <%@ page import="bbs.BbsDAO" %>
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/custom.css">
 <title>掲示板</title>
 </head>
 <body>
@@ -110,7 +110,7 @@
 			  		if ( userID != null && userID.equals(bbs.getUserID())){
 			  	%>
 			  			<a href="update.jsp?bbsID=<%= bbsID %>" class="btn btn-primary">更新</a>
-			  			<a href="deleteAction.jsp?bbsID=<%= bbsID %>" class="btn btn-primary">削除</a>	  
+			  			<a onclick="return confirm('Are you sure?');" href="deleteAction.jsp?bbsID=<%= bbsID %>" class="btn btn-primary">削除</a>	  
 			  	<%
 			  		}
 			  	%>

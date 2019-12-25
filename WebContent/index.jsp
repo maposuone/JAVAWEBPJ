@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="css/custom.css">
 <title>掲示板</title>
 </head>
 <body>

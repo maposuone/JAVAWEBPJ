@@ -144,4 +144,18 @@ public class BbsDAO {
 		}
 		return -1;//DB Error
 	}
+	public int delete(int bbsID) {
+		String SQL = "update bbs set bbsAvailable = 0  where bbsID = ?";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1, bbsID);
+			return pstmt.executeUpdate(); //1st åfé¶ï®
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return -1;//DB Error
+		     
+	}
 }
+
+
